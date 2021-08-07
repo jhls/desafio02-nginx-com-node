@@ -2,8 +2,12 @@ version: "3"
 
 services:
     nginx:
+        
+        image: jeansena/desafio02-nginx:prod
+
         build:
-            context: ./nginx
+            context: nginx
+        
         container_name: nginx
         networks:
             - desafio
@@ -12,13 +16,12 @@ services:
         depends_on: 
             - app
     app:
+        image: jeansena/desafio02-node:prod
         build:
-            context: ./node  
+            context: node
         container_name: app
         networks:
             - desafio
-        volumes: 
-            - ./node:/usr/src/nodeapp
         tty: true
         ports: 
             - "3000:3000"
@@ -27,8 +30,11 @@ services:
 
     db: 
         
-        build: 
-            context: ./mysql-init
+        image: jeansena/desafio02-mysql:prod
+        build:
+            context: mysql-init
+        
+        
         command: --innodb-use-native-aio=0
         container_name: db
         restart: always
